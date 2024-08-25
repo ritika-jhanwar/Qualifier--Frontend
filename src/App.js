@@ -18,11 +18,10 @@ function App() {
   ];
 
   const handleSubmit = async () => {
-    setError(''); // Clear previous errors
+    setError('');
     try {
       const parsedJson = JSON.parse(jsonInput);
 
-      // Validate if parsedJson.data is an array
       if (!Array.isArray(parsedJson.data)) {
         throw new Error('Invalid JSON format: `data` must be an array.');
       }
@@ -35,7 +34,6 @@ function App() {
 
       setResponseData(response.data);
     } catch (err) {
-      // Distinguish between JSON parsing errors and API errors
       if (err instanceof SyntaxError) {
         setError('Invalid JSON format.');
       } else if (err.message.startsWith('API error:')) {
@@ -76,39 +74,46 @@ function App() {
     }
 
     return (
-      <div>
-        {filteredData.user && <p>User: {filteredData.user}</p>}
-        {filteredData.email && <p>Email: {filteredData.email}</p>}
-        {filteredData.roll_number && <p>Roll Number: {filteredData.roll_number}</p>}
-        {filteredData.numbers && <p>Numbers: {JSON.stringify(filteredData.numbers)}</p>}
-        {filteredData.alphabets && <p>Alphabets: {JSON.stringify(filteredData.alphabets)}</p>}
-        {filteredData.highest_lowercase_alphabet && <p>Highest Lowercase Alphabet: {JSON.stringify(filteredData.highest_lowercase_alphabet)}</p>}
+      <div className='mt-4'>
+        {filteredData.user && <p className='text-lg font-medium'>User: <span className='font-normal'>{filteredData.user}</span></p>}
+        {filteredData.email && <p className='text-lg font-medium'>Email: <span className='font-normal'>{filteredData.email}</span></p>}
+        {filteredData.roll_number && <p className='text-lg font-medium'>Roll Number: <span className='font-normal'>{filteredData.roll_number}</span></p>}
+        {filteredData.numbers && <p className='text-lg font-medium'>Numbers: <span className='font-normal'>{JSON.stringify(filteredData.numbers)}</span></p>}
+        {filteredData.alphabets && <p className='text-lg font-medium'>Alphabets: <span className='font-normal'>{JSON.stringify(filteredData.alphabets)}</span></p>}
+        {filteredData.highest_lowercase_alphabet && <p className='text-lg font-medium'>Highest Lowercase Alphabet: <span className='font-normal'>{JSON.stringify(filteredData.highest_lowercase_alphabet)}</span></p>}
       </div>
     );
   };
 
   return (
-    <div classname="b">
-      
-      <title>21BCE1035</title>
-      <div><h1 class="font-medium">API INPUT</h1></div>
-      <input
-        type="text"
+    <div className='p-5 max-w-lg mx-auto bg-white rounded-lg shadow-lg mt-5'>
+      <h1 className='text-2xl font-bold mb-4 text-center'>API INPUT</h1>
+      <textarea
+        rows="2"
         value={jsonInput}
         onChange={(e) => setJsonInput(e.target.value)}
         placeholder="Enter JSON here"
+        className='w-full p-2 border border-gray-300 rounded-lg mb-4'
       />
-      <button onClick={handleSubmit}>Submit</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <button
+        onClick={handleSubmit}
+        className='w-full py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600'
+      >
+        Submit
+      </button>
+      {error && <p className='mt-4 text-red-500 text-center'>{error}</p>}
       {responseData && (
-        <Select
-          isMulti
-          options={options}
-          onChange={(selectedOptions) => setFilterOptions(selectedOptions)}
-        />
+        <div className='mt-4'>
+          <Select
+            isMulti
+            options={options}
+            onChange={(selectedOptions) => setFilterOptions(selectedOptions)}
+            className='mb-4'
+          />
+        </div>
       )}
       <div>
-        <h2>Filtered Response:</h2>
+        <h2 className='text-xl font-semibold mb-2'>Filtered Response:</h2>
         {filterResponse()}
       </div>
     </div>
